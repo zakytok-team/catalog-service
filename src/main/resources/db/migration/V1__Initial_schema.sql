@@ -1,6 +1,6 @@
 CREATE TABLE item
 (
-    id                 BIGSERIAL PRIMARY KEY NOT NULL,
+    id                 UUID      PRIMARY KEY NOT NULL,
     title              varchar(255)          NOT NULL,
     author             varchar(255)          NOT NULL,
     year               integer               NOT NULL,

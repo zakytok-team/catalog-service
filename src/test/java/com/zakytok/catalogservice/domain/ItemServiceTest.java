@@ -6,10 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,9 +30,9 @@ public class ItemServiceTest {
     @Test
     void createItem() {
         ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
-        ItemDto createdDto = new ItemDto("title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID);
-        when(itemRepository.findBy(toCreate.getTitle(), toCreate.getAuthor(), toCreate.getYear(), toCreate.getType()))
-                .thenReturn(Optional.empty());
+        ItemDto createdDto = new ItemDto(UUID.randomUUID(),"title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID);
+        when(itemRepository.existsByTitleAndAuthorAndYearAndType(toCreate.getTitle(), toCreate.getAuthor(), toCreate.getYear(), toCreate.getType()))
+                .thenReturn(false);
         when(itemMapper.toItemDto(any())).thenReturn(createdDto);
 
         ItemDto result = itemService.create(toCreate);
@@ -48,11 +47,11 @@ public class ItemServiceTest {
     void createItemNotUnique() {
         ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
         Item existing = Item.of("title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID);
-        when(itemRepository.findBy(
+        when(itemRepository.existsByTitleAndAuthorAndYearAndType(
                 toCreate.getTitle(),
                 toCreate.getAuthor(),
                 toCreate.getYear(),
-                toCreate.getType())).thenReturn(Optional.of(existing));
+                toCreate.getType())).thenReturn(true);
 
         assertThatThrownBy(() -> itemService.create(toCreate))
                 .isInstanceOf(ItemNotUniqueException.class)
@@ -61,11 +60,13 @@ public class ItemServiceTest {
 
     @Test
     void getAllItems() {
-        List<ItemDto> items = List.of(new ItemDto("title1", "author1", 1989, ItemType.VINYL));
-        when(itemRepository.getAllDtos()).thenReturn(items);
+        List<Item> items = List.of(Item.of( "title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID));
+        List<ItemDto> itemsDto = List.of(new ItemDto("title1", "author1", 1989, ItemType.VINYL));
+        when(itemRepository.findAll()).thenReturn(items);
+        when(itemMapper.allToDtos(items)).thenReturn(itemsDto);
 
         List<ItemDto> res = itemService.getAllItems();
-        assertThat(res).isEqualTo(items);
+        assertThat(res).isEqualTo(itemsDto);
     }
 
     @Test

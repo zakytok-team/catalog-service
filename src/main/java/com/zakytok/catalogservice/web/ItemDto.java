@@ -4,6 +4,8 @@ import com.zakytok.catalogservice.domain.ItemType;
 import com.zakytok.catalogservice.domain.ItemValid;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,6 +13,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class ItemDto {
+    private UUID id;
     private String title;
     private String author;
     private int year;

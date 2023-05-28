@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -28,12 +29,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private boolean isUnique(ItemDto item) {
-        Optional<Item> existing = itemRepository.findBy(item.getTitle(), item.getAuthor(), item.getYear(), item.getType());
-        return existing.isEmpty();
+        return !itemRepository.existsByTitleAndAuthorAndYearAndType(item.getTitle(), item.getAuthor(), item.getYear(), item.getType());
     }
 
     @Override
     public List<ItemDto> getAllItems() {
-        return itemRepository.getAllDtos();
+        Iterable<Item> items = itemRepository.findAll();
+        return itemMapper.allToDtos(items);
     }
 }
