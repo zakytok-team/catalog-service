@@ -1,7 +1,7 @@
 package com.zakytok.catalogservice.web;
 
-import com.zakytok.catalogservice.domain.ItemType;
-import com.zakytok.catalogservice.domain.ItemValid;
+import com.zakytok.catalogservice.domain.item.ItemType;
+import com.zakytok.catalogservice.domain.item.ItemValid;
 import lombok.*;
 
 import java.util.UUID;

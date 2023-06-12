@@ -1,5 +1,6 @@
 package com.zakytok.catalogservice.domain;
 
+import com.zakytok.catalogservice.domain.item.*;
 import com.zakytok.catalogservice.web.ItemDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +47,6 @@ public class ItemServiceTest {
     @Test
     void createItemNotUnique() {
         ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
-        Item existing = Item.of("title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID);
         when(itemRepository.existsByTitleAndAuthorAndYearAndType(
                 toCreate.getTitle(),
                 toCreate.getAuthor(),

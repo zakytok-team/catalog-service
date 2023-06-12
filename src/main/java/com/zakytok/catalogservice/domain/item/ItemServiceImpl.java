@@ -1,11 +1,9 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.catalogservice.domain.item;
 
 import com.zakytok.catalogservice.web.ItemDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ItemServiceImpl implements ItemService {

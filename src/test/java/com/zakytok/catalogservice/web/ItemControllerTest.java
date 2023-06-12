@@ -1,10 +1,10 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zakytok.catalogservice.domain.ItemNotUniqueException;
-import com.zakytok.catalogservice.domain.ItemService;
-import com.zakytok.catalogservice.domain.ItemType;
-import com.zakytok.catalogservice.domain.ItemValid;
+import com.zakytok.catalogservice.domain.item.ItemNotUniqueException;
+import com.zakytok.catalogservice.domain.item.ItemService;
+import com.zakytok.catalogservice.domain.item.ItemType;
+import com.zakytok.catalogservice.domain.item.ItemValid;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

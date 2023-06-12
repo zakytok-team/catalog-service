@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.catalogservice.domain.item;
 
 import jakarta.persistence.*;
 import lombok.Getter;
