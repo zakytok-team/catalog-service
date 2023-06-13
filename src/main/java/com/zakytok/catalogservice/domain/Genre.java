@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain.genre;
+package com.zakytok.catalogservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -30,7 +29,10 @@ public class Genre {
     private String name;
 
     @OneToMany(mappedBy = "parent")
-    private Set<Genre> children = new HashSet<>();
+    private Set<Genre> children;
+
+    @ManyToMany(mappedBy = "genres")
+    private Set<Item> items;
 
     @CreatedDate
     private Instant createdDate;

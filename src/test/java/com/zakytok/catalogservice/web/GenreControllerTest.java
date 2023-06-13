@@ -1,7 +1,7 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zakytok.catalogservice.domain.genre.GenreService;
+import com.zakytok.catalogservice.domain.GenreService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,7 +28,7 @@ public class GenreControllerTest {
 
     @Test
     void getAllGenresTestSuccessful() throws Exception {
-        List<GenreDto> genres = List.of(GenreDto.of(1L, "techno"), GenreDto.of(null, "electronic"));
+        Set<GenreDto> genres = Set.of(GenreDto.of(1L, "techno"), GenreDto.of(null, "electronic"));
         when(genreService.getAll()).thenReturn(genres);
 
         mockMvc.perform(get("/genres"))

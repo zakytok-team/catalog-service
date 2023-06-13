@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain.item;
+package com.zakytok.catalogservice.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -24,7 +25,12 @@ public class Item {
     private String title;
     private String author;
     private int year;
-
+    @ManyToMany
+    @JoinTable(
+            name = "item_genre",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<Genre> genres;
     @Enumerated(EnumType.STRING)
     private ItemType type;
     @Enumerated(EnumType.STRING)
@@ -36,16 +42,17 @@ public class Item {
     @Version
     private int version;
 
-    private Item(String title, String author, int year, ItemType type, ItemValid valid) {
+    private Item(String title, String author, int year, ItemType type, ItemValid valid, Set<Genre> genres) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.type = type;
         this.valid = valid;
+        this.genres = genres;
     }
 
-    public static Item of(String title, String author, int year, ItemType type, ItemValid valid) {
-        return new Item(title, author, year, type, valid);
+    public static Item of(String title, String author, int year, ItemType type, ItemValid valid, Set<Genre> genres) {
+        return new Item(title, author, year, type, valid, genres);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain.item;
+package com.zakytok.catalogservice.domain;
 
 public enum ItemValid {
     VALID,

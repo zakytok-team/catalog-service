@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain.item;
+package com.zakytok.catalogservice.domain;
 
 public class ItemNotUniqueException extends RuntimeException {
     public ItemNotUniqueException(String message) {

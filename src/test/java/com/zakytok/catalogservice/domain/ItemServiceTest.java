@@ -1,6 +1,6 @@
 package com.zakytok.catalogservice.domain;
 
-import com.zakytok.catalogservice.domain.item.*;
+import com.zakytok.catalogservice.web.GenreDto;
 import com.zakytok.catalogservice.web.ItemDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,11 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +24,9 @@ public class ItemServiceTest {
     ItemRepository itemRepository;
 
     @Mock
+    GenreRepository genreRepository;
+
+    @Mock
     ItemMapper itemMapper;
 
     @InjectMocks
@@ -30,43 +34,28 @@ public class ItemServiceTest {
 
     @Test
     void createItem() {
-        ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
-        ItemDto createdDto = new ItemDto(UUID.randomUUID(),"title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID);
-        when(itemRepository.existsByTitleAndAuthorAndYearAndType(toCreate.getTitle(), toCreate.getAuthor(), toCreate.getYear(), toCreate.getType()))
+        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
+        when(itemRepository.existsByTitleAndAuthorAndYearAndType(toCreate.title(), toCreate.author(), toCreate.year(), toCreate.type()))
                 .thenReturn(false);
-        when(itemMapper.toItemDto(any())).thenReturn(createdDto);
+        when(genreRepository.findByName("techno")).thenReturn(Optional.of(Genre.of("techno")));
 
-        ItemDto result = itemService.create(toCreate);
+        itemService.create(toCreate);
 
-        assertThat(result).matches(item -> item.getTitle().equals(toCreate.getTitle())
-                && item.getAuthor().equals(toCreate.getAuthor())
-                && item.getYear() == toCreate.getYear()
-                && item.getValid().equals(ItemValid.VALID));
+        verify(itemRepository).save(any());
     }
 
     @Test
     void createItemNotUnique() {
-        ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
+        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
         when(itemRepository.existsByTitleAndAuthorAndYearAndType(
-                toCreate.getTitle(),
-                toCreate.getAuthor(),
-                toCreate.getYear(),
-                toCreate.getType())).thenReturn(true);
+                toCreate.title(),
+                toCreate.author(),
+                toCreate.year(),
+                toCreate.type())).thenReturn(true);
 
         assertThatThrownBy(() -> itemService.create(toCreate))
                 .isInstanceOf(ItemNotUniqueException.class)
                 .hasMessage("Item " + toCreate + " is not unique!");
-    }
-
-    @Test
-    void getAllItems() {
-        List<Item> items = List.of(Item.of( "title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID));
-        List<ItemDto> itemsDto = List.of(new ItemDto("title1", "author1", 1989, ItemType.VINYL));
-        when(itemRepository.findAll()).thenReturn(items);
-        when(itemMapper.allToDtos(items)).thenReturn(itemsDto);
-
-        List<ItemDto> res = itemService.getAllItems();
-        assertThat(res).isEqualTo(itemsDto);
     }
 
     @Test

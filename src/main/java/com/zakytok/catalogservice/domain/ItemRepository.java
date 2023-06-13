@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain.item;
+package com.zakytok.catalogservice.domain;
 
 import org.springframework.data.repository.CrudRepository;
 

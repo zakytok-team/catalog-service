@@ -1,10 +1,10 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zakytok.catalogservice.domain.item.ItemNotUniqueException;
-import com.zakytok.catalogservice.domain.item.ItemService;
-import com.zakytok.catalogservice.domain.item.ItemType;
-import com.zakytok.catalogservice.domain.item.ItemValid;
+import com.zakytok.catalogservice.domain.ItemNotUniqueException;
+import com.zakytok.catalogservice.domain.ItemService;
+import com.zakytok.catalogservice.domain.ItemType;
+import com.zakytok.catalogservice.domain.ItemValid;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -31,7 +33,7 @@ public class ItemControllerTest {
 
     @Test
     void getAllItemsTestSuccessful() throws Exception {
-        List<ItemDto> items = List.of(new ItemDto("title1", "author1", 1989, ItemType.VINYL));
+        List<ItemDto> items = List.of(ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno")));
         when(itemService.getAllItems()).thenReturn(items);
 
         mockMvc.perform(get("/items"))
@@ -51,9 +53,10 @@ public class ItemControllerTest {
         tracklist one to many
         valid (VALID, ON_REVIEW, INVALID)
         */
-        ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
-        ItemDto created = buildCreatedItem(toCreate);
-        when(itemService.create(toCreate)).thenReturn(created);
+        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
+        ItemDto created = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID, Set.of("techno"));
+
+        when(itemService.create(any())).thenReturn(created);
 
         mockMvc.perform(post("/items")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +68,7 @@ public class ItemControllerTest {
 
     @Test
     void createItemNotUnique() throws Exception {
-        ItemDto toCreate = new ItemDto("title1", "author1", 1989, ItemType.VINYL);
+        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
         String exceptionMessage = "Item " + toCreate + " not unique!";
         when(itemService.create(toCreate)).thenThrow(new ItemNotUniqueException(exceptionMessage));
 
@@ -75,11 +78,5 @@ public class ItemControllerTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
                 .andExpect(content().string(exceptionMessage));
-    }
-
-    private ItemDto buildCreatedItem(ItemDto itemDto) {
-        ItemDto created = new ItemDto(itemDto.getTitle(), itemDto.getAuthor(), itemDto.getYear(), itemDto.getType());
-        created.setValid(ItemValid.VALID);
-        return created;
     }
 }

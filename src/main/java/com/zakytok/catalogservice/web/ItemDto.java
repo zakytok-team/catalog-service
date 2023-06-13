@@ -1,29 +1,25 @@
 package com.zakytok.catalogservice.web;
 
-import com.zakytok.catalogservice.domain.item.ItemType;
-import com.zakytok.catalogservice.domain.item.ItemValid;
-import lombok.*;
+import com.zakytok.catalogservice.domain.ItemType;
+import com.zakytok.catalogservice.domain.ItemValid;
 
+import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class ItemDto {
-    private UUID id;
-    private String title;
-    private String author;
-    private int year;
-    private ItemType type;
-    private ItemValid valid;
+public record ItemDto(
+        UUID id,
+        String title,
+        String author,
+        int year,
+        ItemType type,
+        ItemValid valid,
+        Set<String> genres
+) {
+    public static ItemDto of(String title, String author, int year, ItemType type, Set<String> genres) {
+        return new ItemDto(null, title, author, year, type, null, genres);
+    }
 
-    public ItemDto(String title, String author, int year, ItemType type) {
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.type = type;
+    public static ItemDto of(String title, String author, int year, ItemType type, ItemValid valid, Set<String> genres) {
+        return new ItemDto(null, title, author, year, type, valid, genres);
     }
 }

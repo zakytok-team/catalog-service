@@ -1,6 +1,5 @@
 package com.zakytok.catalogservice.domain;
 
-import com.zakytok.catalogservice.domain.genre.*;
 import com.zakytok.catalogservice.web.GenreDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,7 +76,7 @@ public class GenreServiceTest {
 
         assertThatThrownBy(() -> genreService.create(toCreate))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Genre with parent id " + toCreate.parentId() + " does not exist.");
+                .hasMessage("Genre with id " + toCreate.parentId() + " does not exist.");
     }
 
     @Test
@@ -89,5 +88,32 @@ public class GenreServiceTest {
         assertThatThrownBy(() -> genreService.create(toCreate))
                 .isInstanceOf(GenreNotUniqueException.class)
                 .hasMessage("Genre " + toCreate.name() + " already exists!");
+    }
+
+    @Test
+    void updateWithNotExistingGenre() {
+        Long invalidId = 1L;
+        String newValue = "house";
+
+        when(genreRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> genreService.update(invalidId, newValue))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Genre with id " + invalidId + " does not exist.");
+    }
+
+    @Test
+    void updateWithNotUniqueGenre() {
+        Long invalidId = 1L;
+        String newValue = "house";
+
+        Genre toUpdate = Genre.of("techno");
+
+        when(genreRepository.findById(invalidId)).thenReturn(Optional.of(toUpdate));
+        when(genreRepository.existsByName(newValue)).thenReturn(true);
+
+        assertThatThrownBy(() -> genreService.update(invalidId, newValue))
+                .isInstanceOf(GenreNotUniqueException.class)
+                .hasMessage("Genre " + newValue + " already exists!");
     }
 }
