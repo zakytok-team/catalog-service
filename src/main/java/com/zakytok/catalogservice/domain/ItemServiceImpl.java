@@ -1,26 +1,31 @@
 package com.zakytok.catalogservice.domain;
 
 import com.zakytok.catalogservice.web.ItemDto;
+import com.zakytok.catalogservice.web.ItemValidDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.stream.Collectors.toSet;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final GenreRepository genreRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, GenreRepository genreRepository) {
-        this.itemRepository = itemRepository;
-        this.itemMapper = itemMapper;
-        this.genreRepository = genreRepository;
+    public ItemDto get(UUID id) {
+        Item item = findItem(id);
+        return itemMapper.toItemDto(item);
+    }
+
+    public ItemValidDto isValid(UUID id) {
+        Item item = findItem(id);
+        boolean valid = item.getValid().equals(ItemValid.VALID);
+        return ItemValidDto.of(id, valid);
     }
 
     public List<ItemDto> getAllItems() {

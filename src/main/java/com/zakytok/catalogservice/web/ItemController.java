@@ -19,6 +19,18 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDto> getItem(@PathVariable UUID id) {
+        ItemDto item = itemService.get(id);
+        return ResponseEntity.ok(item);
+    }
+
+    @GetMapping("/{id}/valid")
+    public ResponseEntity<ItemValidDto> isItemValid(@PathVariable UUID id) {
+        ItemValidDto itemValid = itemService.isValid(id);
+        return ResponseEntity.ok(itemValid);
+    }
+
     @GetMapping
     public ResponseEntity<List<ItemDto>> getItems() {
         List<ItemDto> items = itemService.getAllItems();
@@ -31,7 +43,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(itemDto);
     }
 
-    @PatchMapping("{id}/genres")
+    @PatchMapping("/{id}/genres")
     public ResponseEntity<ItemDto> updateItemGenres(@PathVariable UUID id, @RequestParam("names") Set<String> genres) {
         ItemDto updated = itemService.updateItemGenres(id, genres);
         return ResponseEntity.ok(updated);
