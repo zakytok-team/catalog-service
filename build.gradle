@@ -50,9 +50,10 @@ dependencyManagement {
 }
 
 bootBuildImage {
+	/* for macbook on M chip
 	docker {
 		host = "/Users/okravch/.docker/run/docker.sock"
-	}
+	} */
 	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION" : "17.*"]
 }
