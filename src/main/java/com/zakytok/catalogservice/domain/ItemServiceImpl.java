@@ -23,9 +23,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemValidDto isValid(UUID id) {
-        Item item = findItem(id);
-        boolean valid = item.getValid().equals(ItemValid.VALID);
-        return ItemValidDto.of(id, valid);
+        Optional<Item> item = itemRepository.findById(id);
+        if (item.isPresent()) {
+            boolean valid = item.get().getValid().equals(ItemValid.VALID);
+            return ItemValidDto.of(id, valid);
+        } else {
+            return ItemValidDto.of(id, false);
+        }
     }
 
     public List<ItemDto> getAllItems() {
