@@ -1,11 +1,11 @@
 package com.zakytok.catalogservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.*;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -41,6 +41,10 @@ public class Item {
     private Instant lastModifiedDate;
     @Version
     private int version;
+    @CreatedBy
+    String createdBy;
+    @LastModifiedBy
+    String lastModifiedBy;
 
     private Item(String title, String author, int year, ItemType type, ItemValid valid, Set<Genre> genres) {
         this.title = title;
