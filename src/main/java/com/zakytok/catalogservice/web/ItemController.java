@@ -48,4 +48,10 @@ public class ItemController {
         ItemDto updated = itemService.updateItemGenres(id, genres);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteItem(@PathVariable UUID id) {
+        itemService.delete(id);
+    }
 }

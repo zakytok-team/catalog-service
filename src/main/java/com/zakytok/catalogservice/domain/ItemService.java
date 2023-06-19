@@ -14,6 +14,8 @@ public interface ItemService {
 
     ItemDto create(ItemDto item);
 
+    void delete(UUID id);
+
     List<ItemDto> getAllItems();
 
     ItemDto updateItemGenres(UUID id, Set<String> genres);

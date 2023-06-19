@@ -58,6 +58,12 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Override
+    public void delete(UUID id) {
+        Item toDelete = findItem(id);
+        itemRepository.delete(toDelete);
+    }
+
     private boolean isUnique(ItemDto item) {
         return !itemRepository.existsByTitleAndAuthorAndYearAndType(item.title(), item.author(), item.year(), item.type());
     }
