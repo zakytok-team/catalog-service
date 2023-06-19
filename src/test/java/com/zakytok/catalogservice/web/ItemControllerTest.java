@@ -1,6 +1,7 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zakytok.catalogservice.config.SecurityConfig;
 import com.zakytok.catalogservice.domain.ItemNotUniqueException;
 import com.zakytok.catalogservice.domain.ItemService;
 import com.zakytok.catalogservice.domain.ItemType;
@@ -9,11 +10,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -23,10 +31,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ItemController.class)
+@Import(SecurityConfig.class)
 public class ItemControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    JwtDecoder jwtDecoder;
 
     @MockBean
     ItemService itemService;
@@ -59,6 +71,8 @@ public class ItemControllerTest {
         when(itemService.create(any())).thenReturn(created);
 
         mockMvc.perform(post("/items")
+                        .with(SecurityMockMvcRequestPostProcessors.jwt()
+                                .authorities(new SimpleGrantedAuthority("ROLE_employee")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(toCreate)))
                 .andExpect(status().isCreated())
@@ -73,10 +87,37 @@ public class ItemControllerTest {
         when(itemService.create(toCreate)).thenThrow(new ItemNotUniqueException(exceptionMessage));
 
         mockMvc.perform(post("/items")
+                        .with(SecurityMockMvcRequestPostProcessors.jwt()
+                                .authorities(new SimpleGrantedAuthority("ROLE_employee")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(toCreate)))
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
                 .andExpect(content().string(exceptionMessage));
+    }
+
+    @Test
+    void whenDeleteItemWithAdminRoleThen204() throws Exception {
+        var itemId = UUID.randomUUID();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/items/" + itemId)
+                        .with(SecurityMockMvcRequestPostProcessors.jwt()
+                                .authorities(new SimpleGrantedAuthority("ROLE_employee"))))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void whenDeleteItemWithUserRoleThen403() throws Exception {
+        var itemId = UUID.randomUUID();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/items/" + itemId)
+                        .with(SecurityMockMvcRequestPostProcessors.jwt()
+                                .authorities(new SimpleGrantedAuthority("ROLE_customer"))))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    void whenDeleteItemWithUserRoleThen401() throws Exception {
+        var itemId = UUID.randomUUID();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/items/" + itemId))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 }
