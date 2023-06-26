@@ -32,7 +32,7 @@ public class Genre {
     private Set<Genre> children;
 
     @ManyToMany(mappedBy = "genres")
-    private Set<Item> items;
+    private Set<Media> media;
 
     @CreatedDate
     private Instant createdDate;

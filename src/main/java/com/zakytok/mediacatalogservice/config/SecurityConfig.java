@@ -18,7 +18,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.
-                authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "/", "/items/**").permitAll()
+                authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "/", "/media/**").permitAll()
                         .anyRequest().hasRole("employee"))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 // do not store any tokens

@@ -1,6 +1,6 @@
 package com.zakytok.mediacatalogservice.domain;
 
-import com.zakytok.mediacatalogservice.web.ItemDto;
+import com.zakytok.mediacatalogservice.web.MediaDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Mapper(componentModel = "spring")
-public abstract class ItemMapper {
+public abstract class MediaMapper {
 
     @Named("mapGenres")
     public Set<String> mapGenres(Set<Genre> genres) {
@@ -20,7 +20,7 @@ public abstract class ItemMapper {
     }
 
     @Mapping(source = "genres", target = "genres", qualifiedByName = "mapGenres")
-    public abstract ItemDto toItemDto(Item item);
+    public abstract MediaDto toDto(Media media);
 
-    public abstract List<ItemDto> allToDtos(Iterable<Item> items);
+    public abstract List<MediaDto> allToDtos(Iterable<Media> allMedia);
 }

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Item {
+public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -27,14 +27,14 @@ public class Item {
     private int year;
     @ManyToMany
     @JoinTable(
-            name = "item_genre",
-            joinColumns = @JoinColumn(name = "item_id"),
+            name = "media_genre",
+            joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
     @Enumerated(EnumType.STRING)
-    private ItemType type;
+    private MediaType type;
     @Enumerated(EnumType.STRING)
-    private ItemValid valid;
+    private MediaValid valid;
     @CreatedDate
     private Instant createdDate;
     @LastModifiedDate
@@ -46,7 +46,7 @@ public class Item {
     @LastModifiedBy
     String lastModifiedBy;
 
-    private Item(String title, String author, int year, ItemType type, ItemValid valid, Set<Genre> genres) {
+    private Media(String title, String author, int year, MediaType type, MediaValid valid, Set<Genre> genres) {
         this.title = title;
         this.author = author;
         this.year = year;
@@ -55,8 +55,8 @@ public class Item {
         this.genres = genres;
     }
 
-    public static Item of(String title, String author, int year, ItemType type, ItemValid valid, Set<Genre> genres) {
-        return new Item(title, author, year, type, valid, genres);
+    public static Media of(String title, String author, int year, MediaType type, MediaValid valid, Set<Genre> genres) {
+        return new Media(title, author, year, type, valid, genres);
     }
 }
 

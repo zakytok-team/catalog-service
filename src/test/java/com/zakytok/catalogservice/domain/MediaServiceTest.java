@@ -1,8 +1,8 @@
 package com.zakytok.catalogservice.domain;
 
 import com.zakytok.mediacatalogservice.domain.*;
-import com.zakytok.mediacatalogservice.web.ItemDto;
-import com.zakytok.mediacatalogservice.web.ItemValidDto;
+import com.zakytok.mediacatalogservice.web.MediaDto;
+import com.zakytok.mediacatalogservice.web.MediaValidDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,55 +19,55 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ItemServiceTest {
+public class MediaServiceTest {
 
     @Mock
-    ItemRepository itemRepository;
+    MediaRepository mediaRepository;
 
     @Mock
     GenreRepository genreRepository;
 
     @Mock
-    ItemMapper itemMapper;
+    MediaMapper mediaMapper;
 
     @InjectMocks
-    ItemServiceImpl itemService;
+    MediaServiceImpl itemService;
 
     @Test
     void createItem() {
-        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
-        when(itemRepository.existsByTitleAndAuthorAndYearAndType(toCreate.title(), toCreate.author(), toCreate.year(), toCreate.type()))
+        MediaDto toCreate = MediaDto.of("title1", "author1", 1989, MediaType.VINYL, Set.of("techno"));
+        when(mediaRepository.existsByTitleAndAuthorAndYearAndType(toCreate.title(), toCreate.author(), toCreate.year(), toCreate.type()))
                 .thenReturn(false);
         when(genreRepository.findByName("techno")).thenReturn(Optional.of(Genre.of("techno")));
 
         itemService.create(toCreate);
 
-        verify(itemRepository).save(any());
+        verify(mediaRepository).save(any());
     }
 
     @Test
     void createItemNotUnique() {
-        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
-        when(itemRepository.existsByTitleAndAuthorAndYearAndType(
+        MediaDto toCreate = MediaDto.of("title1", "author1", 1989, MediaType.VINYL, Set.of("techno"));
+        when(mediaRepository.existsByTitleAndAuthorAndYearAndType(
                 toCreate.title(),
                 toCreate.author(),
                 toCreate.year(),
                 toCreate.type())).thenReturn(true);
 
         assertThatThrownBy(() -> itemService.create(toCreate))
-                .isInstanceOf(ItemNotUniqueException.class)
+                .isInstanceOf(MediaNotUniqueException.class)
                 .hasMessage("Item " + toCreate + " is not unique!");
     }
 
     @Test
     void itemNotValid() {
         UUID itemId = UUID.randomUUID();
-        Item notValidItem = new Item();
-        notValidItem.setValid(ItemValid.INVALID);
+        Media notValidMedia = new Media();
+        notValidMedia.setValid(MediaValid.INVALID);
 
-        when(itemRepository.findById(itemId)).thenReturn(Optional.of(notValidItem));
+        when(mediaRepository.findById(itemId)).thenReturn(Optional.of(notValidMedia));
 
-        ItemValidDto itemValid = itemService.isValid(itemId);
+        MediaValidDto itemValid = itemService.isValid(itemId);
 
         assert !itemValid.isValid();
     }
@@ -75,12 +75,12 @@ public class ItemServiceTest {
     @Test
     void itemValid() {
         UUID itemId = UUID.randomUUID();
-        Item notValidItem = new Item();
-        notValidItem.setValid(ItemValid.VALID);
+        Media notValidMedia = new Media();
+        notValidMedia.setValid(MediaValid.VALID);
 
-        when(itemRepository.findById(itemId)).thenReturn(Optional.of(notValidItem));
+        when(mediaRepository.findById(itemId)).thenReturn(Optional.of(notValidMedia));
 
-        ItemValidDto itemValid = itemService.isValid(itemId);
+        MediaValidDto itemValid = itemService.isValid(itemId);
 
         assert itemValid.isValid();
     }

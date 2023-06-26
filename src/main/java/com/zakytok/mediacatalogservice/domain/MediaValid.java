@@ -1,6 +1,6 @@
 package com.zakytok.mediacatalogservice.domain;
 
-public enum ItemValid {
+public enum MediaValid {
     VALID,
     ON_REVIEW,
     INVALID

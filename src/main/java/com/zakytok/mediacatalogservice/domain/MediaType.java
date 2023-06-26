@@ -1,6 +1,6 @@
 package com.zakytok.mediacatalogservice.domain;
 
-public enum ItemType {
+public enum MediaType {
     VINYL,
     CD,
     CASSETTE

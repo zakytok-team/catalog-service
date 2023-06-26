@@ -2,18 +2,17 @@ package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zakytok.mediacatalogservice.config.SecurityConfig;
-import com.zakytok.mediacatalogservice.domain.ItemNotUniqueException;
-import com.zakytok.mediacatalogservice.domain.ItemService;
-import com.zakytok.mediacatalogservice.domain.ItemType;
-import com.zakytok.mediacatalogservice.domain.ItemValid;
-import com.zakytok.mediacatalogservice.web.ItemController;
-import com.zakytok.mediacatalogservice.web.ItemDto;
+import com.zakytok.mediacatalogservice.domain.MediaNotUniqueException;
+import com.zakytok.mediacatalogservice.domain.MediaService;
+import com.zakytok.mediacatalogservice.domain.MediaType;
+import com.zakytok.mediacatalogservice.domain.MediaValid;
+import com.zakytok.mediacatalogservice.web.MediaController;
+import com.zakytok.mediacatalogservice.web.MediaDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
@@ -32,9 +31,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ItemController.class)
+@WebMvcTest(MediaController.class)
 @Import(SecurityConfig.class)
-public class ItemControllerTest {
+public class MediaControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,16 +42,16 @@ public class ItemControllerTest {
     JwtDecoder jwtDecoder;
 
     @MockBean
-    ItemService itemService;
+    MediaService mediaService;
 
     @Test
     void getAllItemsTestSuccessful() throws Exception {
-        List<ItemDto> items = List.of(ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno")));
-        when(itemService.getAllItems()).thenReturn(items);
+        List<MediaDto> items = List.of(MediaDto.of("title1", "author1", 1989, MediaType.VINYL, Set.of("techno")));
+        when(mediaService.getAll()).thenReturn(items);
 
         mockMvc.perform(get("/items"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(org.springframework.http.MediaType.APPLICATION_JSON))
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(items)));
     }
 
@@ -67,31 +66,31 @@ public class ItemControllerTest {
         tracklist one to many
         valid (VALID, ON_REVIEW, INVALID)
         */
-        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
-        ItemDto created = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, ItemValid.VALID, Set.of("techno"));
+        MediaDto toCreate = MediaDto.of("title1", "author1", 1989, MediaType.VINYL, Set.of("techno"));
+        MediaDto created = MediaDto.of("title1", "author1", 1989, MediaType.VINYL, MediaValid.VALID, Set.of("techno"));
 
-        when(itemService.create(any())).thenReturn(created);
+        when(mediaService.create(any())).thenReturn(created);
 
         mockMvc.perform(post("/items")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
                                 .authorities(new SimpleGrantedAuthority("ROLE_employee")))
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(toCreate)))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(org.springframework.http.MediaType.APPLICATION_JSON))
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(created)));
     }
 
     @Test
     void createItemNotUnique() throws Exception {
-        ItemDto toCreate = ItemDto.of("title1", "author1", 1989, ItemType.VINYL, Set.of("techno"));
+        MediaDto toCreate = MediaDto.of("title1", "author1", 1989, MediaType.VINYL, Set.of("techno"));
         String exceptionMessage = "Item " + toCreate + " not unique!";
-        when(itemService.create(toCreate)).thenThrow(new ItemNotUniqueException(exceptionMessage));
+        when(mediaService.create(toCreate)).thenThrow(new MediaNotUniqueException(exceptionMessage));
 
         mockMvc.perform(post("/items")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
                                 .authorities(new SimpleGrantedAuthority("ROLE_employee")))
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(toCreate)))
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
