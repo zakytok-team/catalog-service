@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalog-service
+  name: media-catalog-service
   labels:
-    app: catalog-service
+    app: media-catalog-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: catalog-service
+      app: media-catalog-service
   template:
     metadata:
       labels:
-        app: catalog-service
+        app: media-catalog-service
     spec:
       containers:
-        - name: catalog-service
-          image: catalog-service
+        - name: media-catalog-service
+          image: media-catalog-service
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -30,6 +30,6 @@ spec:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8888
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://zakytok-postgres:5432/db_catalog
+              value: jdbc:postgresql://zakytok-postgres:5432/db_media_catalog
             - name: SPRING_PROFILES_ACTIVE
               value: default

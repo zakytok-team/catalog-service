@@ -1,7 +1,8 @@
 package com.zakytok.catalogservice.domain;
 
-import com.zakytok.catalogservice.web.ItemDto;
-import com.zakytok.catalogservice.web.ItemValidDto;
+import com.zakytok.mediacatalogservice.domain.*;
+import com.zakytok.mediacatalogservice.web.ItemDto;
+import com.zakytok.mediacatalogservice.web.ItemValidDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

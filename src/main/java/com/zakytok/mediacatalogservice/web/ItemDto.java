@@ -1,7 +1,7 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
-import com.zakytok.catalogservice.domain.ItemType;
-import com.zakytok.catalogservice.domain.ItemValid;
+import com.zakytok.mediacatalogservice.domain.ItemType;
+import com.zakytok.mediacatalogservice.domain.ItemValid;
 
 import java.util.Set;
 import java.util.UUID;

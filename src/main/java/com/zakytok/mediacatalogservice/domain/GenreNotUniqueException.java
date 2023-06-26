@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
 public class GenreNotUniqueException extends RuntimeException {
     public GenreNotUniqueException(String message) {

@@ -9,11 +9,11 @@ server:
 
 spring:
   application:
-    name: catalog-service
+    name: media-catalog-service
   datasource:
     username: user
     password: password
-    url: jdbc:postgresql://localhost:5432/db_catalog
+    url: jdbc:postgresql://localhost:5432/db_media_catalog
     hikari:
       connection-timeout: 2000 #ms
       maximum-pool-size: 5

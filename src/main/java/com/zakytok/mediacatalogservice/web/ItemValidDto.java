@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
 import java.util.UUID;
 

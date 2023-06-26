@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Id;

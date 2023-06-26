@@ -1,10 +1,9 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
-import com.zakytok.catalogservice.web.GenreDto;
+import com.zakytok.mediacatalogservice.web.GenreDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 

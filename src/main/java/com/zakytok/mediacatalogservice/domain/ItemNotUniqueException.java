@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
 public class ItemNotUniqueException extends RuntimeException {
     public ItemNotUniqueException(String message) {

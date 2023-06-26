@@ -1,7 +1,9 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zakytok.catalogservice.domain.GenreService;
+import com.zakytok.mediacatalogservice.domain.GenreService;
+import com.zakytok.mediacatalogservice.web.GenreController;
+import com.zakytok.mediacatalogservice.web.GenreDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.mockito.Mockito.when;

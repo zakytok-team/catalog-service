@@ -1,11 +1,9 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
-import com.zakytok.catalogservice.web.GenreDto;
-import com.zakytok.catalogservice.web.ItemDto;
+import com.zakytok.mediacatalogservice.web.ItemDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

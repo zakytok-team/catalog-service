@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
-import com.zakytok.catalogservice.web.GenreDto;
+import com.zakytok.mediacatalogservice.web.GenreDto;
 
 import java.util.Set;
 

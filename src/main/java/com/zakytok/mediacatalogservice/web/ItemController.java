@@ -1,6 +1,6 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
-import com.zakytok.catalogservice.domain.ItemService;
+import com.zakytok.mediacatalogservice.domain.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

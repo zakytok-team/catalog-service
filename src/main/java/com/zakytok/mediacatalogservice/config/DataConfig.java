@@ -1,4 +1,4 @@
-package com.zakytok.catalogservice.config;
+package com.zakytok.mediacatalogservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

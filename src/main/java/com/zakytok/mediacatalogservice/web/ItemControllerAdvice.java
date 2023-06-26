@@ -1,6 +1,6 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
-import com.zakytok.catalogservice.domain.ItemNotUniqueException;
+import com.zakytok.mediacatalogservice.domain.ItemNotUniqueException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,11 +1,13 @@
 package com.zakytok.catalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zakytok.catalogservice.config.SecurityConfig;
-import com.zakytok.catalogservice.domain.ItemNotUniqueException;
-import com.zakytok.catalogservice.domain.ItemService;
-import com.zakytok.catalogservice.domain.ItemType;
-import com.zakytok.catalogservice.domain.ItemValid;
+import com.zakytok.mediacatalogservice.config.SecurityConfig;
+import com.zakytok.mediacatalogservice.domain.ItemNotUniqueException;
+import com.zakytok.mediacatalogservice.domain.ItemService;
+import com.zakytok.mediacatalogservice.domain.ItemType;
+import com.zakytok.mediacatalogservice.domain.ItemValid;
+import com.zakytok.mediacatalogservice.web.ItemController;
+import com.zakytok.mediacatalogservice.web.ItemDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
