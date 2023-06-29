@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface MediaRepository extends CrudRepository<Media, UUID> {
-    boolean existsByTitleAndAuthorAndYearAndType(String title, String author, int year, MediaType type);
+    boolean existsByTitleAndAuthorIdAndLabelIdAndYearAndType(String title, UUID authorId, UUID labelId, int year, MediaType type);
 }

@@ -20,6 +20,8 @@ public abstract class MediaMapper {
     }
 
     @Mapping(source = "genres", target = "genres", qualifiedByName = "mapGenres")
+    @Mapping(source="author.id", target="authorId")
+    @Mapping(source="label.id", target="labelId")
     public abstract MediaDto toDto(Media media);
 
     public abstract List<MediaDto> allToDtos(Iterable<Media> allMedia);

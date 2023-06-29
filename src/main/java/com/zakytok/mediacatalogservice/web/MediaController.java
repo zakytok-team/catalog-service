@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/media")
+@RequestMapping("catalog/media")
 public class MediaController {
 
     private final MediaService mediaService;
@@ -45,7 +45,7 @@ public class MediaController {
 
     @PatchMapping("/{id}/genres")
     public ResponseEntity<MediaDto> updateMediaGenres(@PathVariable UUID id, @RequestParam("names") Set<String> genres) {
-        MediaDto updated = mediaService.updateMediaGenres(id, genres);
+        MediaDto updated = mediaService.updateGenres(id, genres);
         return ResponseEntity.ok(updated);
     }
 
