@@ -1,6 +1,5 @@
-package com.zakytok.catalogservice.domain;
+package com.zakytok.mediacatalogservice.domain;
 
-import com.zakytok.mediacatalogservice.domain.*;
 import com.zakytok.mediacatalogservice.web.GenreDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ public class GenreServiceTest {
     GenreMapper genreMapper;
 
     @InjectMocks
-    GenreServiceImpl genreService;
+    GenreService genreService;
 
     @Test
     void createNewParentGenre() {

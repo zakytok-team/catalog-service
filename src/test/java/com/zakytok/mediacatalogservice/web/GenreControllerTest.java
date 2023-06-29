@@ -1,9 +1,7 @@
-package com.zakytok.catalogservice.web;
+package com.zakytok.mediacatalogservice.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zakytok.mediacatalogservice.domain.GenreService;
-import com.zakytok.mediacatalogservice.web.GenreController;
-import com.zakytok.mediacatalogservice.web.GenreDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
